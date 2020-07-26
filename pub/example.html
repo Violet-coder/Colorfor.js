@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colofor Alpha Realse</title>
+    <link rel="stylesheet" type="text/css" href="css/example.css">
+    <script src='js/colorfor.js'></script>
+    <script defer src='js/example.js'></script>
+</head>
+<body>
+
+    <div id="header">
+    <span class="colorfor gradientText" id="title">Colorfor.js</span>
+    <nav>
+        <ul>
+            <li><a href="#" id="example">Examples</a></li>
+            <li><a href="#">Github</a></li>
+        </ul>
+    </nav>
+    </div>
+    
+    
+    <div class="colorfor base" id="content">  
+        <h1 class="colorfor gradientText">Examples</h1>
+        <!-- <div class="colorfor base1" style="padding: 40px;"> -->
+        <h1>Color the page with theme color</h1>
+        <h3>Here are webpages use theme colors</h3>
+        <p>Click on the palette block to see the page using the corresponding color scheme</p> 
+        <a href="vintageBlue.html"> 
+        <div class="palette">
+        <div style="background-color: #CAE9FF;">base</div>
+        <div style="background-color: #B0D9F4;">base1</div>
+        <div style="background-color: #7AB9DE;">main</div>
+        <div style="background-color: #5FA8D3;">main1</div>
+        <div style="background-color: #D38A5E;">accent</div>
+        <div style="background-color: #CB713D;">accnet</div>
+        <div>Vintage Blue Scheme</div>
+        </div></a>
+        <a href="modernBlue.html">
+        <div class="palette">
+        <div style="background-color: #E0FBFC;">base</div>
+        <div style="background-color: #BCDEEB;">base1</div>
+        <div style="background-color: #98C1D9;">main</div>
+        <div style="background-color: #6B8EAD;">main1</div>
+        <div style="background-color: #EE6C4D;">accent</div>
+        <div style="background-color: #8C4F47;">accnet</div>
+        <div>Modern Blue Scheme</div>
+        </div>
+        </a>
+
+        <a href="vividBlue.html">
+        <div class="palette">
+        <div style="background-color: #CAE9FF;">base</div>
+        <div style="background-color: #B0D9F4;">base1</div>
+        <div style="background-color: #95C9E9;">base2</div>
+        <div style="background-color: #5FA8D3;">main</div>
+        <div style="background-color: #4E91B8;">main1</div>
+        <div style="background-color: #5098B4;">main2</div>
+        <div style="background-color: #F3EEC3;">accent</div>
+        <div style="background-color: #F7E3AF;">accnet1</div>
+        <div style="background-color: #F7AF9D;">accnet2</div>
+        <div>Vivid Blue Scheme</div>
+        </div>
+        </a>
+
+        <p>Users could create a colofor object with correct property to use the color palette they want.<br>Correspondingly, for the elements they want to use the library, they should set these element's class as "colorfor base(base1/base2)/main(main1/main2)/accent(accent1/accent2)" to tell the library what elements they want to apply library to and what kind color they want. For example, base means this element is like the base of the website, usually it can be light colors. Main means this element has basic content inside and their background color shoud be the theme color of the website. Accent means this element is something that you want to emphasize.</p>
+        <ul>
+            Simple Steps:
+            <li>Import the library with script tag</li>
+            <li>Choose element by using correct class</li>
+            <li>Create Colorfor instance in your js file which is used to manipulate the Dom</li>
+            <li>The slected elements will be colored nicely without set the color seperately</li>
+        </ul>
+        <h2>Code</h2>
+        <div class="colorfor base1" style="padding: 20px;"> 
+        <div class="codeblock">
+         <pre>
+             //JS
+             var myColorforInstance = new Colorfor({ 
+                elementClass: '.colorfor',
+                states : {
+                    "color": {
+                        theme:'Blue',
+                        type: 'vintage',
+                        gradients: {
+                            direction: '45deg'
+                        },
+                        animation:{
+                            time: 10,         
+                        },
+                        gradientPic:{
+                            blendingMode:"overlay"
+                        },
+                        selection:{
+                            selectionColor:"accent"
+                        },        
+                    }
+                }
+                });
+            
+            //HTML
+            &lt;body class=&quot;colorfor base&quot;&gt;&lt;/body&gt;
+            &lt;div class=&quot;colorfor main gradient animation&quot; id=&quot;bannerPic&quot;&gt; &lt;/div&gt;
+            &lt;img class=&quot;colorfor gradientPic&quot; src=&quot;img/bannerbanner.jpg&quot; alt=&quot;banner Pic&quot; /&gt;
+            &lt;div class=&quot;colorfor accent1&quot;&gt; &lt;/div&gt;
+            &lt;div class=&quot;colorfor main&quot; id=&quot;profileInfo&quot;&gt;&lt;/div&gt;
+            &lt;div class=&quot;colorfor main&quot; id='timeline'&gt;&lt;/div&gt;
+            &lt;button class=&quot;colorfor gradientButton&quot; id=&quot;back&quot;&gt;Back&lt;/button&gt;
+        </pre>   
+        </div>  
+        </div>      
+
+        <h1>Color the elements with customizable property</h1>
+        <h3>Dipay some interesting elements use the lib</h3>
+        <h2>Color gradients with animation</h2>
+        <div class="wrap">
+            <div class="colorfor main gradient animation" id="bannerPic"> 
+                <!-- <img class="colorfor gradientPic" src="img/bannerbanner.jpg" alt="banner Pic" /> -->
+            </div>
+        </div> 
+        <p>Code</p>
+        <div class="colorfor base1" style="padding: 20px;"> 
+            <div class="codeblock"> 
+            <pre>
+                //JS 
+                var myColorforInstance = new Colorfor({ 
+                    elementClass: '.colorfor',
+                    states : {
+                        "color": {
+                            theme:'Orange',
+                            type: 'vivid',
+                            gradients: {           //must set the gradients to get gradients
+                                direction: '45deg' //must set the gradient direction 
+                            },
+                            animation:{            //must set the animation to get the animation
+                                time: 10,          //must set the animation speed  
+                            }     
+                        }
+                    }
+                    });
+
+
+                //HTML
+                &lt;div class=&quot;colorfor main gradient animation&quot;&gt;&lt;/div&gt; 
+                //set class like example with the same order
+
+                </pre>
+            </div> 
+        </div>
+        <h2>Blend picture with color gradients and animation</h2>
+        <div class="wrap">
+            <div class="colorfor main gradient animation" id="bannerPicplus"> 
+                <img class="colorfor gradientPic" src="img/bannerbanner.jpg" alt="banner Pic" />
+            </div>
+        </div>
+        <p>Code</p>
+        <div class="colorfor base1" style="padding: 20px;"> 
+            <div class="codeblock"> 
+            <pre>
+                //JS 
+                var myColorforInstance = new Colorfor({ 
+                    elementClass: '.colorfor',
+                    states : {
+                        "color": {
+                            theme:'Orange',
+                            type: 'vivid',
+                            gradients: {           //must set the gradients to get gradients
+                                direction: '45deg' //must set the gradient direction 
+                            },
+                            animation:{            //must set the animation to get the animation
+                                time: 10,          //must set the animation speed  
+                            },
+                            gradientPic:{
+                                blendingMode:"overlay"//must set the blend mode to get blending
+                            }, 
+                        }
+                    }
+                    });
+
+
+                //HTML
+                &lt;div class=&quot;colorfor main gradient animation&quot;&gt; &lt;img class=&quot;colorfor gradientPic&quot; src=&quot;img/bannerbanner.jpg&quot; alt=&quot;banner Pic&quot; /&gt;&lt;/div&gt;
+                //User has to set the pic with class="colorfor gradientPic" to get the blend pic
+                //User has to put the pic inside a colorfor element with gradient/animation color and make their sizes same.
+
+                </pre>
+            </div> 
+        </div>
+        <h2>Colorfor and vivid text</h2>
+        <span class="colorfor gradientText" id= "exampleText">Colorfor.js</span> 
+        <p>Code</p>
+        <div class="colorfor base1" style="padding: 20px;"> 
+            <div class="codeblock"> 
+            <pre>
+                //JS 
+                var myColorforInstance = new Colorfor({ 
+                    elementClass: '.colorfor',
+                    states : {
+                        "color": {
+                            theme:'Orange',
+                            type: 'vivid',
+                            gradients: {           //must set the gradients to get gradients
+                                direction: '45deg' //must set the gradient direction 
+                            },
+                            animation:{            //must set the animation to get the animation
+                                time: 10,          //must set the animation speed  
+                            }     
+                        }
+                    }
+                    });
+
+
+                //HTML
+                &lt;span class=&quot;colorfor gradientText&quot;&gt;Colorfor.js&lt;/span&gt; 
+                //User has to set the text with class="colorfor gradientText" to get gradient text
+
+                </pre>
+            </div> 
+        </div>
+        <h2>Colorfor button with hover animation </h2>
+        <button class="colorfor gradientButton" id="back">Hover me</button>
+        <p>Code</p>
+        <div class="colorfor base1" style="padding: 20px;"> 
+            <div class="codeblock"> 
+            <pre>
+                //JS 
+                var myColorforInstance = new Colorfor({ 
+                    elementClass: '.colorfor',
+                    states : {
+                        "color": {
+                            theme:'Orange',
+                            type: 'vivid',
+                            gradients: {           //must set the gradients to get gradients
+                                direction: '45deg' //must set the gradient direction 
+                            },
+                        }
+                    }
+                    });
+
+                //HTML
+                &lt;button class=&quot;colorfor gradientButton&quot;&gt;Hover me&lt;/button&gt;
+                //User has to set the text with class="colorfor gradientButton" to get gradient button
+
+                </pre>
+            </div> 
+        </div>
+        <h2>Selected effect</h2>
+        <p>Library could make the selection color as the accent color if set property in the instance</p>
+        <span class="colorfor gradientText" id= "exampleText">Select me</span> 
+        <p>Code</p>
+        <div class="colorfor base1" style="padding: 20px;"> 
+            <div class="codeblock"> 
+            <pre>
+                //JS 
+                var myColorforInstance = new Colorfor({
+                    elementClass: '.colorfor',
+                    states : {
+                        "color": {
+                            theme:'Blue',
+                            type: 'vivid',
+                            selection:{                 //must set the selection property to get selection effect
+                                selectionColor:"accent" //must choose a seleciton color in the scheme
+                            },             
+                        }
+                    }
+                    });
+
+                //HTML
+                &lt;button class=&quot;colorfor gradientButton&quot;&gt;Hover me&lt;/button&gt;
+                //User has to set the text with class="colorfor gradientButton" to get gradient button
+
+                </pre>
+            </div> 
+        </div>
+        <h1>Color the page just by an image</h1>
+        <h3>User could just choose an image and library will produce color scheme according to this image and paint colors to the page</h3>
+        <p>Click on image to see the page using color scheme produced by the image</p> 
+        <a href="themePic.html"><img src="img/bannerbanner.jpg" alt="banner Pic" id="examplePic"/><a>
+        <p>Code</p>
+        <div class="colorfor base1" style="padding: 20px;"> 
+            <div class="codeblock"> 
+            <pre>
+                //JS 
+                var myColorforInstance = new Colorfor({
+                    elementClass: '.colorfor',
+                    states : {
+                        "color": {
+                            themePic:{               //must set the themePic to let lib know you choose to use the color produced by target image
+                                gradients: {
+                                    direction:'45deg'
+                                },
+                                animation:{
+                                    time: 2,              
+                                },
+                                selection:{
+                                    selectionColor:"accent"
+                                }             
+                            }
+                
+                        }
+                    }
+                    });
+
+                //HTML
+                &lt;img class=&quot;colorfor themePic&quot; src=&quot;img/bannerPic.jpg&quot; alt=&quot;banner Pic&quot; /&gt;
+                //User has to set the image with class="colorfor themePic" to choose the select image
+
+                </pre>
+            </div> 
+        </div>
+
+        <ul>
+            Last thing to say:
+            <li>The color scheme is not only three as shown before, so far we have 6 themes each has three modes(vintage/modern/vivid).</li>
+            <li>Users don't have to create instance for every single element, just create one with corresponding html elements. The js code shows before is just the essential property you have to set if you want to get corresponding functionality. That's to say, if you want more effects, you just need to add propery in the Colorfor instance and set related html elements.</li>
+            <li>The library uses the Vibrant.js to extract color from the image.</li>
+
+        </ul>
+
+        
+        
+
+
+        
+
+        
+    </div>
+        
+    
+
+  
+</body>
+</html>
