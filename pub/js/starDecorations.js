@@ -1,15 +1,15 @@
 function useColorfor() {
-var myColorforInstance = new Colorfor({
+    var myColorforInstance = new Colorfor({
     elementClass: '.colorfor',
     states : {
         "color": {
-            theme:'Orange',
-            type: 'vivid',
+            theme:'Blue',
+            type: 'vintage',
             gradients: {
                 direction: '45deg'
             },
             animation:{
-                time: 40,         
+                time: 10,         
             },
             gradientPic:{
                 blendingMode:"overlay"
@@ -21,8 +21,21 @@ var myColorforInstance = new Colorfor({
                 shape: "star"
             },
 
+            randomColor:{
+                gradients: {
+                    direction:'-45deg'
+                },
+                animation:{
+                    time: 15,              
+                },
+                selection:{
+                    selectionColor:"accent"
+                }             
+            }
+
         }
     }
     });
 }
+
 useColorfor();

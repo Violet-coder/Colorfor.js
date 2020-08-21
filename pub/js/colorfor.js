@@ -1,19 +1,31 @@
 'use strict';
+
+(function(global) {
 const log = console.log
 function Colorfor(options) {
     this.getElements(options.elementClass)
     this.states = options.states;  
     if (this.states.color.hasOwnProperty('themePic')){       
         this.findThemePicColor(this.states.color)
-    } else {
+        this.setGlowingBorder(this.states.color)
+    } else if (this.states.color.hasOwnProperty('randomColor')){
+        this.randomColors(this.states.color)
+        this.setGlowingBorder(this.states.color)
+    }else {
         this.setColor(this.states.color)
         this.setTextColor(this.states.color)
+        this.setAnimatedText(this.states.color,Object.values(ColorScheme[this.states.color.theme][this.states.color.type]))
         this.setGradientPic(this.states.color)
         this.setGradientButton(this.states.color)
+        this.setGlowingBorder(this.states.color)
         if (this.states.color.hasOwnProperty('selection')){
             this.setSelectionColor(this.states.color)
 
         }
+        if (this.states.color.hasOwnProperty('colorforDecoration')){
+            this.setColorforDecoration(this.states.color, Object.values(ColorScheme[this.states.color.theme][this.states.color.type]))
+        }
+        
     }
    
    
@@ -76,15 +88,17 @@ Colorfor.prototype.setGradientsAnimation = function(elements,time){
     animationElements.forEach(element => {
         element.animate([
             // keyframes
-            { backgroundPosition: '0 50%' }, 
-            { backgroundPosition: '50% 100%' },
-            { backgroundPosition: '0 50%' }, 
+            
+            { backgroundPosition: '0% 50%' },
+            { backgroundPosition: '100% 50%' },
+            { backgroundPosition: '0% 50%' }
 
           ], { 
             // timing options
             duration: time*1000,
             iterations: Infinity,
-            direction: "alternate",
+            // direction: "alternate-reverse",
+            easing: 'ease'
           });
     });
  
@@ -128,6 +142,73 @@ Colorfor.prototype.setTextColor =  function(color) {
         throw new Error('The color you set not exits')
     }
 }
+Colorfor.prototype.setAnimatedText =  function(color, colors) {
+    if (typeof color === 'object') {
+        const elements = Array.from(this.targetElements)
+        const textElements =elements.filter((element)=>element.classList.contains("animatedText"))
+        if(color.hasOwnProperty("gradients")){
+            // const grads = [ColorScheme[color.theme][color.type]['base'], ColorScheme[color.theme][color.type]['main'], ColorScheme[color.theme][color.type]['accent']]
+            // this.setGradients(elements,grads, color.gradients.direction)
+            if(textElements.length>0){
+                textElements.forEach(gradientElement =>{
+                gradientElement.style.position="relative"
+                gradientElement.style.color="transparent"
+                gradientElement.whiteSpace="nowrap"
+
+                var sheet = window.document.styleSheets[0];
+                sheet.addRule('.animatedText:before','content: attr(data-text);');
+                sheet.addRule('.animatedText:before','position: absolute;');
+                sheet.addRule('.animatedText:before','top: 0px;');
+                sheet.addRule('.animatedText:before','left: 0px;');
+                sheet.addRule('.animatedText:before','width: 100%;');
+                sheet.addRule('.animatedText:before','height: 100%;');
+               
+                sheet.addRule('.animatedText:before','white-space: nowrap;');
+                sheet.addRule('.animatedText:before','overflow: hidden;');
+                sheet.addRule('.animatedText:before','color: transparent;');
+                sheet.addRule('.animatedText:before','background: linear-gradient(to right'+","+ colors[0]+","+colors[1]+","+colors[2]+","+colors[3]+","+colors[4]+","+colors[3]+","+colors[2]+","+colors[1]+","+ colors[0]+");");
+                sheet.addRule('.animatedText:before','-webkit-background-clip: text;');
+                sheet.addRule('.animatedText:before','animation: type 20s linear;');
+                sheet.addRule('.animatedText:before','filter: blur(1px);');
+
+    
+                sheet.addRule('.animatedText:after','content: attr(data-text);');
+                sheet.addRule('.animatedText:after','position: absolute;');
+                sheet.addRule('.animatedText:after','top: 0px;');
+                sheet.addRule('.animatedText:after','left: 0px;');
+                sheet.addRule('.animatedText:after','width: 100%;');
+                sheet.addRule('.animatedText:after','height: 100%;');
+              
+                sheet.addRule('.animatedText:after','white-space: nowrap;');
+                sheet.addRule('.animatedText:after','overflow: hidden;');
+                sheet.addRule('.animatedText:after','color: transparent;');
+                sheet.addRule('.animatedText:after','background: linear-gradient(to right'+","+ colors[0]+","+colors[1]+","+colors[2]+","+colors[3]+","+colors[4]+","+colors[3]+","+colors[2]+","+colors[1]+","+ colors[0]+");");
+                sheet.addRule('.animatedText:after','-webkit-background-clip: text;');
+                sheet.addRule('.animatedText:after','animation: type 20s linear;');
+                sheet.addRule('.animatedText:after','filter: blur(20px);');
+
+                var cssKeyframe = document.createElement('style');
+                cssKeyframe.type = 'text/css';
+                var rules = document.createTextNode('@-webkit-keyframes type {'+
+                '0% { width: 0%; }'+
+                '70% { width: 100%; }'+
+                '90% { width: 100%; }'+
+                '100% { width: 100%; }'+
+                '}');
+                cssKeyframe.appendChild(rules);
+                document.getElementsByTagName("head")[0].appendChild(cssKeyframe);
+                
+
+            })
+            }
+            
+
+
+        }      
+    }else {
+        throw new Error('The color you set not exits')
+    }
+}
 
 Colorfor.prototype.setGradientPic = function(color) {
     if (typeof color === 'object') {
@@ -135,7 +216,7 @@ Colorfor.prototype.setGradientPic = function(color) {
         const gradientPicElements =elements.filter((element)=>element.classList.contains("gradientPic"))
         if(color.hasOwnProperty("gradientPic")){
             gradientPicElements.forEach(gradientPicElement => gradientPicElement.style.mixBlendMode=color.gradientPic.blendingMode)      
-        }  else{ throw new Error('You did not set the related setting of the gradient pic')}    
+        }     
     }else {
         throw new Error('The color you set not exits')
     }
@@ -178,7 +259,10 @@ Colorfor.prototype.findThemePicColor = function(color) {
     const colorToPass = color
     const elements = Array.from(this.targetElements)
     const themePicElement = elements.filter((targetElement) => targetElement.classList.contains('themePic'))
+    const setColorforDecoration = this.setColorforDecoration
+    const setAnimatedText = this.setAnimatedText
     var paintThemeColor = this.paintThemeColor
+    // let colorsToUse = []
     if (themePicElement.length > 0){
         const source = themePicElement[0].src
         
@@ -201,20 +285,28 @@ Colorfor.prototype.findThemePicColor = function(color) {
                     colorInfo['RGB'] = swatches[swatch].getRgb(),
                     colorInfo['Yvalue'] = 0.299*swatches[swatch].getRgb()[0]+0.587*swatches[swatch].getRgb()[1]+0.114*swatches[swatch].getRgb()[2]
                     themeColors[themeColors.length]=colorInfo
+                    
                 }
                 
-                themeColors.sort((a, b) => b.Yvalue- a.Yvalue)               
-                paintThemeColor(colorToPass, elements, themeColors)
+                themeColors.sort((a, b) => b.Yvalue- a.Yvalue)  
+                paintThemeColor(colorToPass, elements, themeColors, setColorforDecoration, setAnimatedText)
+                
+                
         });
 
         }
         script.src = 'js/Vibrant.js';
         head.appendChild(script);
+        
        
     }   
+    
 }
 
-Colorfor.prototype.paintThemeColor= function(color,elements,themeColors) {
+
+
+Colorfor.prototype.paintThemeColor= function(color,elements,themeColors, setColorforDecoration) {
+       
        if (themeColors.length === 5) {
        const themePicColor = {
            base: themeColors[0]['Hex'],
@@ -223,15 +315,29 @@ Colorfor.prototype.paintThemeColor= function(color,elements,themeColors) {
            accent: themeColors[3]['Hex'],
            accent1:themeColors[4]['Hex'],
        }
+       const colorArray =[]
+       colorArray.push(themeColors[0]['Hex'])
+       colorArray.push(themeColors[1]['Hex'])
+       colorArray.push(themeColors[2]['Hex'])
+       colorArray.push(themeColors[3]['Hex'])
+       colorArray.push(themeColors[4]['Hex'])
+       
        ColorScheme['themePicColor'] = themePicColor
+       
         if (ColorScheme.hasOwnProperty('themePicColor')){
             
             elements.map((element)=>{
                 element.style.backgroundColor= ColorScheme['themePicColor'][element.classList.item(1)]
             })          
         }  
-        if(color.themePic.hasOwnProperty("gradients")){
-            const grads = [ColorScheme['themePicColor']['base'], ColorScheme['themePicColor']['main'], ColorScheme['themePicColor']['accent']]
+        if (color.hasOwnProperty('colorforDecoration')){
+            
+            setColorforDecoration(color, colorArray)
+        }
+        if(color.hasOwnProperty("themePic")){
+            if(color.themePic.hasOwnProperty("gradients")){
+            const grads = Object.values(ColorScheme['themePicColor'])
+
             const gradientElements=elements.filter((element)=>element.classList.contains("gradient"))
             gradientElements.map((gradientElement)=>{
                 gradientElement.style.backgroundImage=`linear-gradient(${color.themePic.gradients.direction}, ${grads})`
@@ -246,6 +352,59 @@ Colorfor.prototype.paintThemeColor= function(color,elements,themeColors) {
                     gradientElement.style.color="transparent"
     
                 })
+                const animatedElements =elements.filter((element)=>element.classList.contains("animatedText"))
+                if(animatedElements.length>0){
+                    animatedElements.forEach(animatedElement =>{
+                    animatedElement.style.position="relative"
+                    animatedElement.style.color="transparent"
+                    animatedElement.whiteSpace="nowrap"
+    
+                    var sheet = window.document.styleSheets[0];
+                    sheet.addRule('.animatedText:before','content: attr(data-text);');
+                    sheet.addRule('.animatedText:before','position: absolute;');
+                    sheet.addRule('.animatedText:before','top: 0px;');
+                    sheet.addRule('.animatedText:before','left: 0px;');
+                    sheet.addRule('.animatedText:before','width: 100%;');
+                    sheet.addRule('.animatedText:before','height: 100%;');
+                   
+                    sheet.addRule('.animatedText:before','white-space: nowrap;');
+                    sheet.addRule('.animatedText:before','overflow: hidden;');
+                    sheet.addRule('.animatedText:before','color: transparent;');
+                    sheet.addRule('.animatedText:before','background: linear-gradient(to right'+","+ colorArray[0]+","+colorArray[1]+","+colorArray[2]+","+colorArray[3]+","+colorArray[4]+","+colorArray[3]+","+colorArray[2]+","+colorArray[1]+","+ colorArray[0]+");");
+                    sheet.addRule('.animatedText:before','-webkit-background-clip: text;');
+                    sheet.addRule('.animatedText:before','animation: type 20s linear;');
+                    sheet.addRule('.animatedText:before','filter: blur(1px);');
+    
+        
+                    sheet.addRule('.animatedText:after','content: attr(data-text);');
+                    sheet.addRule('.animatedText:after','position: absolute;');
+                    sheet.addRule('.animatedText:after','top: 0px;');
+                    sheet.addRule('.animatedText:after','left: 0px;');
+                    sheet.addRule('.animatedText:after','width: 100%;');
+                    sheet.addRule('.animatedText:after','height: 100%;');
+                  
+                    sheet.addRule('.animatedText:after','white-space: nowrap;');
+                    sheet.addRule('.animatedText:after','overflow: hidden;');
+                    sheet.addRule('.animatedText:after','color: transparent;');
+                    sheet.addRule('.animatedText:after','background: linear-gradient(to right'+","+ colorArray[0]+","+colorArray[1]+","+colorArray[2]+","+colorArray[3]+","+colorArray[4]+","+colorArray[3]+","+colorArray[2]+","+colorArray[1]+","+ colorArray[0]+");");
+                    sheet.addRule('.animatedText:after','-webkit-background-clip: text;');
+                    sheet.addRule('.animatedText:after','animation: type 20s linear;');
+                    sheet.addRule('.animatedText:after','filter: blur(20px);');
+    
+                    var cssKeyframe = document.createElement('style');
+                    cssKeyframe.type = 'text/css';
+                    var rules = document.createTextNode('@-webkit-keyframes type {'+
+                    '0% { width: 0%; }'+
+                    '70% { width: 100%; }'+
+                    '90% { width: 100%; }'+
+                    '100% { width: 100%; }'+
+                    '}');
+                    cssKeyframe.appendChild(rules);
+                    document.getElementsByTagName("head")[0].appendChild(cssKeyframe);
+                    
+    
+                })
+                }
                 if(color.themePic.hasOwnProperty("animation")){
                     textElements.forEach(textElement => {
                         textElement.style.backgroundSize="400%"
@@ -257,7 +416,8 @@ Colorfor.prototype.paintThemeColor= function(color,elements,themeColors) {
                             // timing options
                             duration: color.themePic.animation.time*1000,
                             iterations: Infinity,
-                            direction: "alternate",
+                            direction: "alternate-reverse",
+                            easing:"ease",
                           });
     
                     })
@@ -265,7 +425,7 @@ Colorfor.prototype.paintThemeColor= function(color,elements,themeColors) {
                 
             //set button color 
             const gradientButtonElements =elements.filter((element)=>element.classList.contains("gradientButton"))
-            const buttonGrads = [ColorScheme['themePicColor']['accent'],ColorScheme[color.theme][color.type]['main'], ColorScheme['themePicColor']['accent1']]
+            const buttonGrads = [ColorScheme['themePicColor']['accent'],ColorScheme['themePicColor']['main'], ColorScheme['themePicColor']['accent1']]
             gradientButtonElements.forEach(gradientButtonElement =>{
                 gradientButtonElement.style.backgroundImage=`linear-gradient(${color.themePic.gradients.direction}, ${buttonGrads})`
                 gradientButtonElement.style.backgroundSize="200% "  
@@ -294,18 +454,111 @@ Colorfor.prototype.paintThemeColor= function(color,elements,themeColors) {
                     animationElement.animate([
                     // keyframes
                     { backgroundPosition: 'left' }, 
-                    // { backgroundPosition: '50% 100%' },
+                    { backgroundPosition: '50% 100%' },
                     { backgroundPosition: 'right' }, 
 
                 ], { 
                     duration: color.themePic.animation.time*1000,
                     iterations: Infinity,
                     direction: "alternate",
+                    easing:"ease",
                 });
-            });       
+            });    
+            
+             
                 }      
            
             }
+            
+            
+        }
+
+        if(color.hasOwnProperty("randomColor")){
+            if(color.randomColor.hasOwnProperty("gradients")){
+                const grads = Object.values(ColorScheme['themePicColor'])
+                const gradientElements=elements.filter((element)=>element.classList.contains("gradient"))
+                gradientElements.map((gradientElement)=>{
+                    gradientElement.style.backgroundImage=`linear-gradient(${color.randomColor.gradients.direction}, ${grads})`
+                })
+                //set text color
+                const textElements =elements.filter((element)=>element.classList.contains("gradientText"))
+                const textgrads = [ColorScheme['themePicColor']['base'], ColorScheme['themePicColor']['main'], ColorScheme['themePicColor']['accent']]
+                    textElements.forEach(gradientElement =>{
+                        gradientElement.style.backgroundImage=`linear-gradient(${color.randomColor.gradients.direction}, ${textgrads})`
+                        gradientElement.style.backgroundClip="text"
+                        gradientElement.style.WebkitBackgroundClip="text"
+                        gradientElement.style.color="transparent"
+        
+                    })
+                    if(color.randomColor.hasOwnProperty("animation")){
+                        textElements.forEach(textElement => {
+                            textElement.style.backgroundSize="400%"
+                            textElement.animate([
+                                // keyframes
+                                { backgroundPosition: 'left' }, 
+                                { backgroundPosition: 'right' },           
+                              ], { 
+                                // timing options
+                                duration: color.randomColor.animation.time*1000,
+                                iterations: Infinity,
+                                easing:"ease",
+                                direction: "alternate-reverse",
+                              });
+        
+                        })
+                    }
+                    
+                //set button color 
+                const gradientButtonElements =elements.filter((element)=>element.classList.contains("gradientButton"))
+                const buttonGrads = [ColorScheme['themePicColor']['accent'],ColorScheme['themePicColor']['main'], ColorScheme['themePicColor']['accent1']]
+                gradientButtonElements.forEach(gradientButtonElement =>{
+                    gradientButtonElement.style.backgroundImage=`linear-gradient(${color.randomColor.gradients.direction}, ${buttonGrads})`
+                    gradientButtonElement.style.backgroundSize="200% "  
+                    gradientButtonElement.style.backgroundPosition="left"
+                    gradientButtonElement.style.transition="background-position 0.75s"              
+                    gradientButtonElement.onmouseover=function(){this.style.backgroundPosition="right"}
+                    gradientButtonElement.onmouseout=function(){this.style.backgroundPosition="left"}
+    
+                })
+    
+                //set selection color
+                if(color.randomColor.hasOwnProperty('selection')) {
+                    var sheet = window.document.styleSheets[0];
+                    sheet.insertRule(`::selection {background: ${ColorScheme['themePicColor'][color.randomColor.selection.selectionColor]}; color: black;}`, sheet.cssRules.length);
+                }
+                          
+                if(color.randomColor.hasOwnProperty("animation")){
+                    const animationGrads = Object.values(ColorScheme['themePicColor'])
+                    const animationElements = elements.filter((element)=>element.classList.contains("animation"))
+                    animationElements.map((animationElement)=>{
+                        animationElement.style.backgroundImage=`linear-gradient(${color.randomColor.gradients.direction}, ${animationGrads})`
+                    })
+                    
+                    const operateElements=animationElements.map((animationElement) => {animationElement.style.backgroundSize="400% 400%"})
+                    animationElements.forEach(animationElement => {
+                        animationElement.animate([
+                        // keyframes
+                        // { backgroundPosition: 'left' }, 
+                        { backgroundPosition: '0% 50%' },
+                        { backgroundPosition: '100% 50%' },
+                        { backgroundPosition: '0% 50%' }
+                        
+                        // { backgroundPosition: 'right' }, 
+    
+                    ], { 
+                        duration: color.randomColor.animation.time*1000,
+                        iterations: Infinity,
+                        easing: "ease",
+                        // direction: "alternate",
+                    });
+                });   
+                    this.setGradientPic(color)    
+                    this.setAnimatedText(this.states.color,Object.values(ColorScheme['themePicColor']))    
+                    }      
+               
+                }
+        }
+        
 
 
         } 
@@ -313,7 +566,251 @@ Colorfor.prototype.paintThemeColor= function(color,elements,themeColors) {
        } //Now the lib can only deal with the pic that can be extracted 5 colors
         // Conditions that color is more than that or less than that will be solved in the next period
         // The function looks so fat and there are dupicate code in the function, hope to change the strucure of the function to reuse the code
+
+   
+Colorfor.prototype.setColorforDecoration = function(color, colors) {
+    if (typeof color === 'object'){
+        if (color.hasOwnProperty("colorforDecoration")){
+            if (color.colorforDecoration.shape==="circle"){
+                window.onclick = function (e) {
+                    // let colorArray=Object.values(ColorScheme[color.theme][color.type])
+                    let colorArray = colors
+                    let heartNum = Math.floor(Math.random() * colorArray.length);
+                    let div = document.createElement("canvas");
+                    div.setAttribute("class", "div-box");
+                    div.style.color = colorArray[heartNum];
+                    div.style.display = "inline-block";
+                    div.style.position="absolute"
+                    div.style.width ="20px"
+                    div.style.height = "20px"
+                    div.style.webkitTransform="rotate(45deg)"
+                    div.style.transform="rotate(45deg)"
+                    div.style.backgroundColor=colorArray[heartNum]
+                    div.style.borderRadius="50%"
+                    div.style.zIndex="99999"                   
+                    document.body.appendChild(div);
+                    
+                    let x = e.pageX - div.offsetWidth / 2;
+                    let y = e.pageY - div.offsetHeight / 2;
+                    div.style.left = x + "px";
+                    div.style.top = y + "px";
+                    
+                    let num = Math.round(Math.random());
+                    let timer = setInterval(() => {
+                        y -= 10;
+                        if (num === 0) x -= 10;
+                        else x += 10;
+                        div.style.left = x + "px";
+                        div.style.top = y + "px";
+                        
+                        if (y < -100) {
+                            clearInterval(timer);
+                            div.remove();
+                        }
+                    }, 100);
+
+            }
+            }
+            if (color.colorforDecoration.shape==="heart"){
+                window.onclick = function (e) {
+                    let colorArray = colors
+                    let heartNum = Math.floor(Math.random() * colorArray.length);
+                    let div = document.createElement("div");
+                    div.style.display = "inline-block";
+                    div.style.position="absolute"
+                    div.style.width ="60px"
+                    div.style.height = "60px"
+                    const svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    svg1.setAttribute("class", "div-box")
+                    div.setAttribute("viewBox", "0 0 32 29.6")
+                    const path =  document.createElementNS("http://www.w3.org/2000/svg", 'path');
+                    path.setAttribute("d","M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z");
+                    svg1.appendChild(path);
+                    svg1.style.color = colorArray[heartNum];
+                    svg1.style.display = "inline-block";
+                    svg1.style.position="relative"
+                    svg1.style.top = "5px"
+                    svg1.style.fill=colorArray[heartNum]
+                    div.style.zIndex="99999"        
+                    div.appendChild(svg1)  
+                    document.body.appendChild(div);
+                  
+                    let x = e.pageX - div.offsetWidth / 2;
+                    let y = e.pageY - div.offsetHeight / 2;
+                    div.style.left = x + "px";
+                    div.style.top = y + "px";
+                    
+                    let num = Math.round(Math.random());
+                    let timer = setInterval(() => {
+                        y -= 10;
+                        if (num === 0) x -= 10;
+                        else x += 10;
+                        div.style.left = x + "px";
+                        div.style.top = y + "px";
+                        
+                        if (y < -100) {
+                            clearInterval(timer);
+                            div.remove();
+                        }
+                    }, 100);
+
+            }
+            }
+            if (color.colorforDecoration.shape==="star"){
+                window.onclick = function (e) {
+                    let colorArray = colors
+                    let heartNum = Math.floor(Math.random() * colorArray.length);
+                    let div = document.createElement("div");
+                    div.style.display = "inline-block";
+                    div.style.position="absolute"
+                    div.style.width ="20px"
+                    div.style.height = "20px"
+                    
+                    const svg1 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    svg1.setAttribute("class", "div-box")
+                    svg1.style.width="300px"
+                    svg1.style.height="200px"
+                   
+                    svg1.style.position="absolute"
+                   
+                    
+                    const polygon =  document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    // polygon.setAttribute("points","100,10 40,198 190,78 10,78 160,198");
+                    polygon.setAttribute("points","50,5 20,99 95,39 5,39 80,99");
+                    polygon.style.fill=colorArray[heartNum]
+
+                    svg1.appendChild(polygon);
+
+                    svg1.style.zIndex="99999"        
+                    div.appendChild(svg1)  
+                    document.body.appendChild(div);
+                  
+                    let x = e.pageX - div.offsetWidth / 2;
+                    let y = e.pageY - div.offsetHeight / 2;
+                    div.style.left = x + "px";
+                    div.style.top = y + "px";
+                    
+                    let num = Math.round(Math.random());
+                    let timer = setInterval(() => {
+                        y -= 10;
+                        if (num === 0) x -= 10;
+                        else x += 10;
+                        div.style.left = x + "px";
+                        div.style.top = y + "px";
+                        
+                        if (y < -100) {
+                            clearInterval(timer);
+                            div.remove();
+                        }
+                    }, 100);
+
+            }
+            }
+        }
+
+    }
     
+}
+
+Colorfor.prototype.randomColors = function(color) {
+    if (typeof color === 'object') {
+        const colorToPass = color
+        const elements = Array.from(this.targetElements)
+        const randomColorPalette=[]
+        const setColorforDecoration = this.setColorforDecoration     
+        const setGradientPic = this.setGradientPic
+        const setAnimatedText = this.setAnimatedText
+        // MorandiColors
+        
+        for (var i = 0; i < 5; i++) {
+            let colorInfo ={}
+            colorInfo['RGB']=[]
+            let heartNum = Math.floor(Math.random() * MorandiColors.length);
+            colorInfo['Hex']=MorandiColors[heartNum]
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(colorInfo['Hex']);
+            const r=parseInt(result[1], 16)
+            colorInfo['RGB'].push(r)
+            const g=parseInt(result[2], 16)
+            colorInfo['RGB'].push(g)
+            const b=parseInt(result[3], 16)
+            colorInfo['RGB'].push(b)
+            colorInfo['Yvalue']=0.299*r+0.587*g+0.114*b
+            randomColorPalette[randomColorPalette.length]=colorInfo        
+          }
+          randomColorPalette.sort((a, b) => b.Yvalue- a.Yvalue)
+        
+        this.paintThemeColor(colorToPass, elements, randomColorPalette, setColorforDecoration,setGradientPic,setAnimatedText)
+             
+    }else {
+        throw new Error('The color format you is not correct')
+    }
+}
+
+Colorfor.prototype.setGlowingBorder = function(color) {
+    if (typeof color === 'object'){
+        const colors = []
+        for (var i = 0; i < 6; i++) {                      
+            const Hex ='#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
+            colors.push(Hex)
+          }
+        
+        const elements = Array.from(this.targetElements)
+        const glowingBorderElements =elements.filter((element)=>element.classList.contains("glowingBorder"))
+        // console.log("enter")
+        console.log("colors", colors)
+
+        if(glowingBorderElements.length>0){
+            glowingBorderElements.forEach(borderElement => {
+                console.log("enter")
+                borderElement.style.position="relative"
+               
+                var sheet = window.document.styleSheets[0];
+                sheet.addRule('.glowingBorder:before','content: " ";');
+                sheet.addRule('.glowingBorder:before','position: absolute;');
+                sheet.addRule('.glowingBorder:before','top: -2px;');
+                sheet.addRule('.glowingBorder:before','left: -2px;');
+                sheet.addRule('.glowingBorder:before','background: linear-gradient(45deg'+","+ colors[0]+","+colors[1]+","+colors[2]+","+colors[3]+","+colors[4]+","+colors[3]+","+colors[2]+","+colors[1]+","+ colors[0]+");");
+                sheet.addRule('.glowingBorder:before','background-size: 150%;');
+                sheet.addRule('.glowingBorder:before','height: calc(100% + 4px);');
+                sheet.addRule('.glowingBorder:before','width: calc(100% + 4px);');
+                sheet.addRule('.glowingBorder:before','z-index: -1;');
+                sheet.addRule('.glowingBorder:before','animation: animate 10s linear infinite;');
+             
+                sheet.addRule('.glowingBorder:after','content: " ";');
+                sheet.addRule('.glowingBorder:after','position: absolute;');
+                sheet.addRule('.glowingBorder:after','top: -2px;');
+                sheet.addRule('.glowingBorder:after','left: -2px;');
+                sheet.addRule('.glowingBorder:after','background: linear-gradient(45deg'+","+ colors[0]+","+colors[1]+","+colors[2]+","+colors[3]+","+colors[4]+","+colors[3]+","+colors[2]+","+colors[1]+","+ colors[0]+");");
+                sheet.addRule('.glowingBorder:after','background-size: 150%;');
+                sheet.addRule('.glowingBorder:after','height: calc(100% + 4px);');
+                sheet.addRule('.glowingBorder:after','width: calc(100% + 4px);');
+                sheet.addRule('.glowingBorder:after','z-index: -1;');
+                sheet.addRule('.glowingBorder:after','animation: animate 10s linear infinite;');
+                sheet.addRule('.glowingBorder:after','filter: blur(40px);');
+
+                var cssKeyframe = document.createElement('style');
+                cssKeyframe.type = 'text/css';
+                var rules = document.createTextNode('@-webkit-keyframes animate {'+
+                '0% { background-position: 0% 0%; }'+
+                '50% { background-position: 400% 0%; }'+
+                '100% { background-position: 0% 0%; }'+
+                '}');
+                cssKeyframe.appendChild(rules);
+                document.getElementsByTagName("head")[0].appendChild(cssKeyframe);
+
+
+
+
+
+    
+            })
+
+        }
+
+    }
+    
+}
+
 
 
 
@@ -500,3 +997,8 @@ const ColorScheme = {
             }, 
 }
 
+const MorandiColors =["#c1cbd7","#afb0b2","#939391","#bfbfbf","#e0e5df","#b5c4b1","#8696a7","#9ca8b8","#ececea","#fffaf4","#96a48b","#7b8b6f",
+"#dfd7d7","#656565","#d8caaf","#c5b8a5","#fdf9ee","#f0ebe5","#d3d4cc","#e0cdcf","#b7b1a5","#a29988","#dadad8","#f8ebd8","#965454","#6b5152","#f0ebe5","#cac3bb","#a6a6a8","#7a7281","#a27e7e", "#ead0d1", "#faead3", "#c7b8a1","#c9c0d3","#eee5f8"]
+
+    global.Colorfor = global.Colorfor || Colorfor
+})(window)
