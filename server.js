@@ -9,7 +9,7 @@ const app = express()
 // app.use(express.static(__dirname + '/pub'))
 
 app.get('/', (req, res) => {
-    res.sendFile('/pub/examples.html');
+    res.sendFile(__dirname +'/pub/examples.html');
   })
 
 app.use(express.static(__dirname + '/pub'))
