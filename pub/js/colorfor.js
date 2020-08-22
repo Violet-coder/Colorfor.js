@@ -273,7 +273,7 @@ Colorfor.prototype.findThemePicColor = function(color) {
             var img = document.createElement('img');
             img.setAttribute('src', source)
             img.addEventListener('load', function() {
-            var vibrant = new Vibrant(img, 64, 6);
+            var vibrant = new Vibrant(img, 64, 6);   //Use external library Vibrant.js to extract color from the themePic 
             var swatches = vibrant.swatches()
             const themeColors=[]
             
