@@ -756,12 +756,11 @@ Colorfor.prototype.setGlowingBorder = function(color) {
         
         const elements = Array.from(this.targetElements)
         const glowingBorderElements =elements.filter((element)=>element.classList.contains("glowingBorder"))
-        // console.log("enter")
-        console.log("colors", colors)
+        
 
         if(glowingBorderElements.length>0){
             glowingBorderElements.forEach(borderElement => {
-                console.log("enter")
+                
                 borderElement.style.position="relative"
                
                 var sheet = window.document.styleSheets[0];

@@ -57,22 +57,18 @@
             <div class="codeblock">
              <pre>
                     <span class="codeComment">//JS </span>
-                    var myColorforInstance = new Colorfor({
-                        elementClass: '.colorfor',
+                    var myColorforInstance = new Colorfor({ 
+                        elementClass: '.colorfor', <span class="codeComment">//Elements you want to use the lib should belong to class 'colorfor'</span>
                         states : {
                             "color": {
-                                themePic:{               <span class="codeComment">//must set the themePic to let lib know you choose to use the color produced by target image</span>
-                                    gradients: {
-                                        direction:'45deg'
-                                    },
-                                    animation:{
-                                        time: 2,              
-                                    },
-                                    selection:{
-                                        selectionColor:"accent"
-                                    }             
+                                theme:'Blue', <span class="codeComment">//Must select the theme color</span>
+                                type: 'vintage', <span class="codeComment">//Must select the color type(vintage/modern/vivid)</span>
+                                gradients: {    <span class="codeComment">//Add gradients property if you want color gradients</span>
+                                    direction: '45deg' <span class="codeComment">//Must choose direction of the gradients(to right/to top/45deg...)</span>
+                                },
+                                animation:{ <span class="codeComment">//Add gradients property if you want color gradients</span>
+                                    time: 10, <span class="codeComment">//Must set time of the animation to control the animation speed</span>
                                 }
-                    
                             }
                         }
                         });
@@ -259,7 +255,7 @@
             <pre>
                 <span class="codeComment">//JS </span>
                 <span class="codeComment">//All three modes can implement blending picture with color gradients and animation, but users must set property gradients and animation</span>
-                <span class="codeComment">users must set the property gradientPic with its blendingMode</span>
+                <span class="codeComment">//Users must set the property gradientPic with its blendingMode</span>
                 var myColorforInstance = new Colorfor({ 
                     elementClass: '.colorfor',
                     states : {
@@ -293,7 +289,7 @@
             <li><h3>Must set <b>gradients</b> and <b>animation</b></h3></li>
             <li><h3>Must set <b>gradientPic</b> with blendingMode</h3></li>
             <li><h3>Must set <b>gradient</b> and <b>animation</b> in the class of the corresponding html element</h3></li>
-            <li><h3>Must setset the <b>pic with class="colorfor gradientPic"</b> to get the blend pic</h3></li>
+            <li><h3>Must set the <b>pic with class="colorfor gradientPic"</b> to get the blend pic</h3></li>
             <li><h3>Must <b>put the pic inside a colorfor element with gradient/animation color</b> and make their sizes same</h3></li>
         </ul> 
         <ul>
@@ -438,6 +434,7 @@
         <ul>
             <h3>Requirements:</h3>
             <li><h3>Must make sure you have choose a color scheme to get the gradient effect</h3></li>
+            <li><h3>Must set the value for the attribute data-text, it should be the same with the content of the animated text</h3></li>
         </ul>
         <h2>Glowing Border</h2>
         <div class="colorfor base1 glowingBorder" style="padding: 20px;height:200px;"> 
@@ -455,7 +452,7 @@
         </div>
         <ul>
             <h3>Requirements:</h3>
-            <li><h3>You don't need to set specific property in the object just remember to set the correct class of the corresponding html elment</h3></li>
+            <li><h3>Must set the element with class="colorfor glowingBorder" to make the element with glowing border</h3></li>
         </ul>
         <h2>Colorful and cute decorations</h2>
         <div class="colorfor base1" style="padding: 20px;"> 

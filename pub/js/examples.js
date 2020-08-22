@@ -6,10 +6,10 @@ var myColorforInstance = new Colorfor({
             theme:'Orange',
             type: 'vivid',
             gradients: {
-                direction: 'to top right'
+                direction: '45deg'
             },
             animation:{
-                time: 40,         
+                time: 30,         
             },
             gradientPic:{
                 blendingMode:"overlay"
