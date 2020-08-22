@@ -6,7 +6,7 @@ var myColorforInstance = new Colorfor({
             theme:'Orange',
             type: 'vivid',
             gradients: {
-                direction: '45deg'
+                direction: 'to top right'
             },
             animation:{
                 time: 40,         

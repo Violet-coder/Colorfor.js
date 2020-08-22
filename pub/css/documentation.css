@@ -1,0 +1,297 @@
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
+#title {
+    font-family: 'Kalam', cursive;  
+    font-size: 35px;
+    float:left;
+}  
+#header {
+    padding: 5px;
+    width: 80%;
+    margin: 0 auto;
+}   
+
+pre {
+    /* font-family: "helvetica", courier, monospace; */
+    font-family: 'Balsamiq Sans', cursive;
+    font-size: 16px;
+ }
+
+nav {
+    float: right
+}
+
+nav ul {
+  /* margin: 0; */
+  /* padding: 0; */
+  list-style: none;
+}
+
+nav li {
+    display: inline-block;
+    margin-left: 70px;
+    position: relative;
+}
+
+nav a {
+    color: #444;
+    text-decoration: none;
+
+}
+
+nav a:hover {
+    color: #000;
+}
+
+#example {
+    content: '';
+    display: block;
+    height: 5px;
+    background-color: #444;
+    top:0;
+    width: 100%;
+}
+b {
+    color:#F3771E;
+}
+
+nav a::before {
+    content: '';
+    display: block;
+    height: 5px;
+    background-color: #444;
+    top:0;
+    width: 0%;
+    transition: all ease-in-out 250ms;
+}
+nav a:hover::before {
+    width: 100%;
+}
+
+.codeComment{
+    color: green;
+}
+
+#content {
+    margin-top: 60px;
+    padding:60px;
+    height:100%;
+}
+
+h1,h2,h3,p {
+    font-family: 'Roboto', sans-serif;
+}
+h1, h2, h3, p {
+    color: #444;
+    text-align:justify;
+    line-height:1.5em;
+}
+p {
+    font-size: 18px;
+}
+
+.palette{
+    margin: 0 80px;
+    display: inline-block;
+    width:300px;
+    height:200px;
+    text-align: center;
+    font-family: 'Kalam', cursive;  
+    color: #444;
+}
+.palette div {
+    height: 30px;
+}
+
+.codeblock {
+    width: 100%;
+    height: 300px;
+    overflow:auto
+}
+#bannerPic {
+	display: block;
+	width: 100%;
+	height: 300px;
+	
+	
+}
+
+.wrap {
+	position: relative;
+    -webkit-background-size: 100%;
+    background-size: 100%;
+
+}
+ .gradientPic {
+	display: block;
+	width: 100%;
+	height: 300px;
+ }
+
+ #exampleText {
+    font-family: 'Kalam', cursive;  
+    font-size: 70px;
+    margin-left:40%;
+ }
+
+ .colorfor .gradientButton{
+	border: 0;
+	cursor: pointer;
+	padding:0.5em 1.5em;
+	font-size: 2rem;
+}
+ 
+
+
+#back {
+	margin-left: 40%;
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+#examplePic {
+    display: block;
+	width: 100%;
+	height: 300px;
+}
+
+#textbackground{
+    width: 100%;
+    height: 100px;
+    background-color: black;
+    text-align: center;
+}
+
+#border {
+	/* background-color: white; */
+	padding: 10px;
+	
+	/* Add properties below */
+	width: 50%;
+	min-height: 300px;
+	margin-left: 25%;
+    margin-top: 50px;
+    text-align: center;
+	
+
+}
+
+#borderText{
+    display: inline-block;
+    font-family: 'Kalam', cursive;  
+    font-size: 70px;
+    margin-left:7%;
+    margin-top: 90px;
+}
+#shapeText{
+    font-family: 'Kalam', cursive; 
+    font-size: 80px; 
+    margin-left:250px;
+}
+#randomText{
+    font-family: 'Kalam', cursive; 
+    font-size: 80px; 
+    margin-left:30%;
+}
+#cirlce{
+    width: 150px;
+    height: 150px;
+    background: #F3771E;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 15%;
+}
+
+#heart {
+    position: relative;
+    width: 100px;
+    height: 150px;
+    /* display: inline-block; */
+  }
+  #heart:before,
+  #heart:after {
+    position: absolute;
+    content: "";
+    left: 50px;
+    top: 0;
+    width: 50px;
+    height: 80px;
+    background: #F3771E;
+    border-radius: 50px 50px 0 0;
+    transform: rotate(-45deg);
+    transform-origin: 0 100%;
+  }
+
+  #heart {
+    fill: #F3771E;
+    position: relative;
+    top: 5px;
+    width: 400px;
+   
+    }
+#heart-box {
+    display: inline-block;
+    width: 400px;
+    height:200px;
+    margin-left: 10%;
+}
+#star {
+    display: inline-block;
+    margin-left: 10%;
+    /* margin-top: 100px; */
+    width: 200px;
+    height:100px;
+    margin-top: 100px
+}
+
+#star-box{
+    display: inline-block;
+    margin-left: 10%;
+    /* margin-top: 100px; */
+    width: 100px;
+    height:150px;
+    margin-top: 100px
+
+}
+#star-five {
+    margin: 50px 0;
+    position: relative;
+    display: block;
+    color:#F3771E;
+    width: 0px;
+    height: 0px;
+    border-right: 100px solid transparent;
+    border-bottom: 70px solid #F3771E;
+    border-left: 100px solid transparent;
+    transform: rotate(35deg);
+  }
+  #star-five:before {
+    border-bottom: 80px solid #F3771E;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    position: absolute;
+    height: 0;
+    width: 0;
+    top: -45px;
+    left: -65px;
+    display: block;
+    content: '';
+    transform: rotate(-35deg);
+  }
+  #star-five:after {
+    position: absolute;
+    display: block;
+    color: #F3771E;
+    top: 3px;
+    left: -105px;
+    width: 0px;
+    height: 0px;
+    border-right: 100px solid transparent;
+    border-bottom: 70px solid #F3771E;
+    border-left: 100px solid transparent;
+    transform: rotate(-70deg);
+    content: '';
+  }
+
+
+
